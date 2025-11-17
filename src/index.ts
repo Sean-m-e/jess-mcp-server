@@ -18,8 +18,8 @@ const loadData = async (filename: string) => {
   return JSON.parse(content);
 };
 
-// URI to filename mapping
-const resources = {
+// URI to filename mapping with proper typing
+const resources: Record<string, { file: string; name: string }> = {
   'jess://knowledge/all': { file: 'knowledge.json', name: 'Knowledge Base' },
   'jess://linguistic/pronunciation_rules': { file: 'pronunciation.json', name: 'Pronunciation Rules' },
   'jess://linguistic/speech_enhancement': { file: 'speech_enhancement.json', name: 'Speech Enhancement' },
@@ -79,7 +79,7 @@ app.get('/resource', async (req, res) => {
   }
 });
 
-// Get resource by short name (for easier access)
+// Get resource by short name
 app.get('/data/:name', async (req, res) => {
   try {
     const name = req.params.name;
@@ -109,11 +109,6 @@ app.get('/data/:name', async (req, res) => {
   }
 });
 
-// Start server
 app.listen(PORT, () => {
   console.log(`✅ Jess MCP Server running on port ${PORT}`);
-  console.log(`🏥 Health: /health`);
-  console.log(`📚 Resources: /resources`);
-  console.log(`🔍 Get resource: /resource?uri=jess://knowledge/all`);
-  console.log(`📦 Quick access: /data/knowledge, /data/pronunciation, etc.`);
 });
