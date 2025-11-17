@@ -1,5 +1,3 @@
-import { Server } from '@modelcontextprotocol/sdk/server/index.js';
-import { ListResourcesRequestSchema, ReadResourceRequestSchema } from '@modelcontextprotocol/sdk/types.js';
 import express from 'express';
 import fs from 'fs/promises';
 import path from 'path';
@@ -13,19 +11,6 @@ const PORT = process.env.PORT || 3000;
 
 app.use(express.json());
 
-// Create MCP server
-const server = new Server(
-  {
-    name: 'jess-mcp-server',
-    version: '1.0.0',
-  },
-  {
-    capabilities: {
-      resources: {},
-    },
-  }
-);
-
 // Load JSON data files
 const loadData = async (filename: string) => {
   const filePath = path.join(__dirname, 'data', filename);
@@ -34,44 +19,16 @@ const loadData = async (filename: string) => {
 };
 
 // URI to filename mapping
-const uriMap: Record<string, string> = {
-  'jess://knowledge/all': 'knowledge.json',
-  'jess://linguistic/pronunciation_rules': 'pronunciation.json',
-  'jess://linguistic/speech_enhancement': 'speech_enhancement.json',
-  'jess://linguistic/australian_patterns': 'australian_patterns.json',
-  'jess://protocols/global_behavioral': 'behavioral_protocols.json',
-  'jess://protocols/contextual_understanding': 'contextual_understanding.json',
-  'jess://protocols/unified_closing': 'closing_protocols.json',
-  'jess://modules/reactive/all': 'reactive_modules.json',
+const resources = {
+  'jess://knowledge/all': { file: 'knowledge.json', name: 'Knowledge Base' },
+  'jess://linguistic/pronunciation_rules': { file: 'pronunciation.json', name: 'Pronunciation Rules' },
+  'jess://linguistic/speech_enhancement': { file: 'speech_enhancement.json', name: 'Speech Enhancement' },
+  'jess://linguistic/australian_patterns': { file: 'australian_patterns.json', name: 'Australian Patterns' },
+  'jess://protocols/global_behavioral': { file: 'behavioral_protocols.json', name: 'Global Behavioral Protocols' },
+  'jess://protocols/contextual_understanding': { file: 'contextual_understanding.json', name: 'Contextual Understanding' },
+  'jess://protocols/unified_closing': { file: 'closing_protocols.json', name: 'Unified Closing' },
+  'jess://modules/reactive/all': { file: 'reactive_modules.json', name: 'Reactive Modules' }
 };
-
-// Register MCP handlers
-server.setRequestHandler(ListResourcesRequestSchema, async () => ({
-  resources: Object.keys(uriMap).map(uri => ({
-    uri,
-    name: uri.split('/').pop() || uri,
-    mimeType: 'application/json'
-  })),
-}));
-
-server.setRequestHandler(ReadResourceRequestSchema, async (request) => {
-  const uri = request.params.uri.toString();
-  const filename = uriMap[uri];
-  
-  if (!filename) {
-    throw new Error(`Unknown resource: ${uri}`);
-  }
-  
-  const data = await loadData(filename);
-  
-  return {
-    contents: [{
-      uri: request.params.uri.toString(),
-      mimeType: 'application/json',
-      text: JSON.stringify(data, null, 2),
-    }],
-  };
-});
 
 // Health check endpoint
 app.get('/health', (req, res) => {
@@ -84,34 +41,69 @@ app.get('/health', (req, res) => {
 });
 
 // List all available resources
-app.get('/resources', async (req, res) => {
+app.get('/resources', (req, res) => {
+  const resourceList = Object.keys(resources).map(uri => ({
+    uri,
+    name: resources[uri].name,
+    mimeType: 'application/json'
+  }));
+  
+  res.json({
+    resources: resourceList
+  });
+});
+
+// Get specific resource by URI
+app.get('/resource', async (req, res) => {
   try {
-    const result = await server.request(
-      { method: 'resources/list' },
-      ListResourcesRequestSchema
-    );
-    res.json(result);
+    const uri = req.query.uri as string;
+    
+    if (!uri) {
+      return res.status(400).json({ error: 'URI parameter required' });
+    }
+    
+    const resource = resources[uri];
+    if (!resource) {
+      return res.status(404).json({ error: 'Resource not found', uri });
+    }
+    
+    const data = await loadData(resource.file);
+    
+    res.json({
+      uri,
+      name: resource.name,
+      data
+    });
   } catch (error) {
     res.status(500).json({ error: String(error) });
   }
 });
 
-// Get specific resource
-app.get('/resource', async (req, res) => {
+// Get resource by short name (for easier access)
+app.get('/data/:name', async (req, res) => {
   try {
-    const uri = req.query.uri as string;
-    if (!uri) {
-      return res.status(400).json({ error: 'URI parameter required' });
+    const name = req.params.name;
+    const fileMap: Record<string, string> = {
+      'knowledge': 'knowledge.json',
+      'pronunciation': 'pronunciation.json',
+      'speech': 'speech_enhancement.json',
+      'australian': 'australian_patterns.json',
+      'behavioral': 'behavioral_protocols.json',
+      'contextual': 'contextual_understanding.json',
+      'closing': 'closing_protocols.json',
+      'reactive': 'reactive_modules.json'
+    };
+    
+    const filename = fileMap[name];
+    if (!filename) {
+      return res.status(404).json({ 
+        error: 'Resource not found',
+        available: Object.keys(fileMap)
+      });
     }
     
-    const result = await server.request(
-      { 
-        method: 'resources/read',
-        params: { uri }
-      },
-      ReadResourceRequestSchema
-    );
-    res.json(result);
+    const data = await loadData(filename);
+    res.json(data);
   } catch (error) {
     res.status(500).json({ error: String(error) });
   }
@@ -120,7 +112,8 @@ app.get('/resource', async (req, res) => {
 // Start server
 app.listen(PORT, () => {
   console.log(`✅ Jess MCP Server running on port ${PORT}`);
-  console.log(`📡 Health check: http://localhost:${PORT}/health`);
-  console.log(`📚 Resources: http://localhost:${PORT}/resources`);
-  console.log(`🔍 Get resource: http://localhost:${PORT}/resource?uri=jess://knowledge/all`);
+  console.log(`🏥 Health: /health`);
+  console.log(`📚 Resources: /resources`);
+  console.log(`🔍 Get resource: /resource?uri=jess://knowledge/all`);
+  console.log(`📦 Quick access: /data/knowledge, /data/pronunciation, etc.`);
 });
