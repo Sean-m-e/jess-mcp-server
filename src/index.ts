@@ -13,7 +13,7 @@ app.use(express.json());
 
 // Load JSON data files - FIXED PATH
 const loadData = async (filename: string) => {
-  const filePath = path.join(__dirname, 'data', filename);
+  const filePath = path.join(process.cwd(), 'src', 'data', filename);
   const content = await fs.readFile(filePath, 'utf-8');
   return JSON.parse(content);
 };
