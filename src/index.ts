@@ -1,6 +1,7 @@
 import { Server } from '@modelcontextprotocol/sdk/server/index.js';
-import { StdioServerTransport } from '@modelcontextprotocol/sdk/server/stdio.js';
+import { SSEServerTransport } from '@modelcontextprotocol/sdk/server/sse.js';
 import { ListResourcesRequestSchema, ReadResourceRequestSchema } from '@modelcontextprotocol/sdk/types.js';
+import express from 'express';
 import fs from 'fs/promises';
 import path from 'path';
 import { fileURLToPath } from 'url';
@@ -8,6 +9,10 @@ import { fileURLToPath } from 'url';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
+const app = express();
+const PORT = process.env.PORT || 3000;
+
+// Create MCP server
 const server = new Server(
   {
     name: 'jess-mcp-server',
@@ -74,11 +79,20 @@ server.setRequestHandler(ReadResourceRequestSchema, async (request) => {
   };
 });
 
-// Start server
-async function main() {
-  const transport = new StdioServerTransport();
+// SSE endpoint for MCP
+app.get('/sse', async (req, res) => {
+  const transport = new SSEServerTransport('/messages', res);
   await server.connect(transport);
-  console.error('Jess MCP Server running on stdio');
-}
+});
 
-main().catch(console.error);
+// Health check endpoint
+app.get('/health', (req, res) => {
+  res.json({ status: 'healthy', name: 'jess-mcp-server', version: '1.0.0' });
+});
+
+// Start server
+app.listen(PORT, () => {
+  console.log(`Jess MCP Server running on port ${PORT}`);
+  console.log(`SSE endpoint: http://localhost:${PORT}/sse`);
+  console.log(`Health check: http://localhost:${PORT}/health`);
+});
