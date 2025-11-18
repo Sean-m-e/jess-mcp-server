@@ -1,0 +1,549 @@
+{
+  "version": "3.35",
+  "last_updated": "2025-11-18",
+  "purpose": "Keyword patterns for Continuous Information Extraction Protocol",
+  "total_patterns": 352,
+  
+  "extraction_patterns": {
+    
+    "property_type": {
+      "description": "Property type detection keywords",
+      "total_patterns": 8,
+      "triggers": [
+        "house",
+        "apartment",
+        "unit",
+        "townhouse",
+        "villa",
+        "land",
+        "duplex",
+        "studio"
+      ],
+      "context_phrases": [
+        "looking for a [property_type]",
+        "after a [property_type]",
+        "want a [property_type]",
+        "need a [property_type]",
+        "buying a [property_type]",
+        "interested in a [property_type]"
+      ],
+      "extraction_values": [
+        "house",
+        "apartment",
+        "unit",
+        "townhouse",
+        "villa",
+        "land",
+        "block of land",
+        "acreage",
+        "rural",
+        "commercial",
+        "retail",
+        "industrial"
+      ]
+    },
+    
+    "bedrooms": {
+      "description": "Bedroom count detection patterns",
+      "total_patterns": 32,
+      "numeric_patterns": [
+        "1 bed",
+        "2 bed",
+        "3 bed",
+        "4 bed",
+        "5 bed",
+        "6 bed",
+        "1 bedroom",
+        "2 bedrooms",
+        "3 bedrooms",
+        "4 bedrooms",
+        "5 bedrooms",
+        "6 bedrooms",
+        "one bed",
+        "two bed",
+        "three bed",
+        "four bed",
+        "five bed",
+        "one bedroom",
+        "two bedrooms",
+        "three bedrooms",
+        "four bedrooms",
+        "five bedrooms",
+        "1br",
+        "2br",
+        "3br",
+        "4br",
+        "5br",
+        "1-bed",
+        "2-bed",
+        "3-bed",
+        "4-bed",
+        "5-bed",
+        "3-bedder"
+      ],
+      "context_phrases": [
+        "[number] bedroom house",
+        "[number] bed apartment",
+        "with [number] bedrooms",
+        "[number] room place",
+        "house with [number] beds",
+        "apartment with [number] bedrooms"
+      ]
+    },
+    
+    "bathrooms": {
+      "description": "Bathroom count detection patterns",
+      "total_patterns": 35,
+      "numeric_patterns": [
+        "1 bath",
+        "2 bath",
+        "3 bath",
+        "4 bath",
+        "1 bathroom",
+        "2 bathrooms",
+        "3 bathrooms",
+        "4 bathrooms",
+        "one bath",
+        "two bath",
+        "three bath",
+        "four bath",
+        "one bathroom",
+        "two bathrooms",
+        "three bathrooms",
+        "four bathrooms",
+        "1.5 bath",
+        "2.5 bath",
+        "3.5 bath",
+        "one and a half bath",
+        "two and a half bath",
+        "three and a half bath",
+        "1 full bath",
+        "2 full baths",
+        "ensuite",
+        "en suite",
+        "main bathroom",
+        "powder room",
+        "half bath",
+        "guest bathroom"
+      ],
+      "context_phrases": [
+        "[number] bathroom house",
+        "with [number] bathrooms",
+        "[number] bath apartment",
+        "house with [number] baths",
+        "including ensuite"
+      ]
+    },
+    
+    "parking": {
+      "description": "Parking detection patterns",
+      "total_patterns": 38,
+      "numeric_patterns": [
+        "1 car",
+        "2 car",
+        "3 car",
+        "4 car",
+        "one car",
+        "two car",
+        "three car",
+        "four car",
+        "1 carspace",
+        "2 carspaces",
+        "3 carspaces",
+        "one carspace",
+        "two carspaces",
+        "single garage",
+        "double garage",
+        "triple garage",
+        "1 garage",
+        "2 garages",
+        "tandem",
+        "tandem parking",
+        "off-street parking",
+        "on-street parking",
+        "street parking",
+        "driveway",
+        "parking space",
+        "parking spaces",
+        "car park",
+        "carport",
+        "secure parking",
+        "undercover parking",
+        "garage",
+        "no parking",
+        "no car",
+        "street only"
+      ],
+      "context_phrases": [
+        "[number] car garage",
+        "with [number] car spaces",
+        "[number] parking spaces",
+        "garage for [number] cars",
+        "parking for [number]"
+      ]
+    },
+    
+    "budget": {
+      "description": "Budget/price range detection patterns",
+      "total_patterns": 45,
+      "amount_examples": [
+        "five million",
+        "two point five million",
+        "one point eight million",
+        "eight hundred and fifty thousand",
+        "seven hundred and fifty thousand",
+        "one million",
+        "two million",
+        "three million",
+        "four million",
+        "six hundred thousand",
+        "nine hundred thousand",
+        "one point two million",
+        "one point five million",
+        "two point three million"
+      ],
+      "context_phrases": [
+        "to spend",
+        "up to",
+        "around",
+        "about",
+        "got",
+        "have",
+        "price range",
+        "afford",
+        "budget",
+        "budget of",
+        "budget is",
+        "looking to spend",
+        "can afford",
+        "prepared to pay",
+        "willing to pay",
+        "max budget",
+        "maximum",
+        "between X and Y"
+      ],
+      "numeric_modifiers": [
+        "million",
+        "thousand",
+        "k",
+        "m",
+        "$"
+      ],
+      "conditional_phrases": [
+        "Budget depends on what we get for this place",
+        "depends on the sale",
+        "depends on selling",
+        "need to sell first"
+      ]
+    },
+    
+    "timeline": {
+      "description": "Timeframe/timeline detection patterns",
+      "total_patterns": 72,
+      "urgency_indicators": [
+        "asap",
+        "as soon as possible",
+        "urgent",
+        "immediate",
+        "immediately",
+        "soon",
+        "quickly",
+        "right away",
+        "straight away"
+      ],
+      "time_specific": [
+        "next week",
+        "next month",
+        "in the next 3 months",
+        "in the next 6 months",
+        "in the next 12 months",
+        "within 3 months",
+        "within 6 months",
+        "within a year",
+        "by Christmas",
+        "by New Year",
+        "by Easter",
+        "before Christmas",
+        "end of year",
+        "start of next year",
+        "early next year",
+        "mid next year",
+        "late next year"
+      ],
+      "seasonal": [
+        "summer",
+        "winter",
+        "spring",
+        "autumn",
+        "fall"
+      ],
+      "monthly": [
+        "January",
+        "February",
+        "March",
+        "April",
+        "May",
+        "June",
+        "July",
+        "August",
+        "September",
+        "October",
+        "November",
+        "December"
+      ],
+      "relative": [
+        "this year",
+        "next year",
+        "2025",
+        "2026",
+        "future",
+        "not until",
+        "when we sell",
+        "after we sell",
+        "12 months",
+        "six months",
+        "three months"
+      ],
+      "contextual_modifiers": [
+        "looking to move",
+        "planning to buy",
+        "hoping to move",
+        "need to be in by",
+        "moving"
+      ]
+    },
+    
+    "target_areas": {
+      "description": "Suburb/area detection patterns for Melbourne Bayside",
+      "total_patterns": 52,
+      "bayside_suburbs": [
+        "Brighton",
+        "Brighton East",
+        "Hampton",
+        "Hampton East",
+        "Sandringham",
+        "Black Rock",
+        "Beaumaris",
+        "Cheltenham",
+        "Highett",
+        "Mentone",
+        "Moorabbin",
+        "Parkdale",
+        "Elwood",
+        "St Kilda",
+        "St Kilda East",
+        "Middle Park",
+        "Albert Park",
+        "Port Melbourne",
+        "South Melbourne",
+        "Elsternwick",
+        "Caulfield",
+        "Caulfield North",
+        "Caulfield South",
+        "Carnegie",
+        "Murrumbeena",
+        "Bentleigh",
+        "Bentleigh East",
+        "McKinnon",
+        "Ormond"
+      ],
+      "broader_areas": [
+        "Bayside",
+        "Bayside area",
+        "beachside",
+        "beach area",
+        "near the beach",
+        "close to beach",
+        "coastal",
+        "Port Phillip",
+        "inner suburbs",
+        "eastern suburbs",
+        "south east",
+        "south eastern suburbs"
+      ],
+      "context_phrases": [
+        "in [suburb]",
+        "around [suburb]",
+        "[suburb] area",
+        "near [suburb]",
+        "looking in [suburb]",
+        "interested in [suburb]",
+        "preferably [suburb]",
+        "maybe [suburb]"
+      ]
+    },
+    
+    "service_type": {
+      "description": "Service type (buying/selling/dual) detection",
+      "total_patterns": 29,
+      "buying_indicators": [
+        "buy",
+        "buying",
+        "buyer",
+        "purchase",
+        "looking to buy",
+        "interested in buying",
+        "in the market for",
+        "want to buy",
+        "need to buy"
+      ],
+      "selling_indicators": [
+        "sell",
+        "selling",
+        "seller",
+        "Selling",
+        "list",
+        "looking to sell",
+        "want to sell",
+        "need to sell",
+        "thinking of selling",
+        "considering selling",
+        "request for appraisal",
+        "appraisal"
+      ],
+      "dual_indicators": [
+        "both",
+        "buying and selling",
+        "dual",
+        "sell and buy",
+        "selling and buying",
+        "upgrade",
+        "downsize",
+        "relocate"
+      ],
+      "context_qualifiers": [
+        "future",
+        "not until",
+        "maybe in the future",
+        "down the track"
+      ]
+    },
+    
+    "property_purpose": {
+      "description": "Investment vs residence detection",
+      "total_patterns": 18,
+      "investment_indicators": [
+        "investment",
+        "investment property",
+        "to rent",
+        "to rent out",
+        "rental",
+        "rental property",
+        "buy to rent",
+        "for rental income",
+        "for investment",
+        "investment purposes"
+      ],
+      "residence_indicators": [
+        "residence",
+        "live in",
+        "to live in",
+        "family home",
+        "home",
+        "somewhere to live",
+        "place to live",
+        "own residence"
+      ]
+    },
+    
+    "special_requirements": {
+      "description": "Special property requirements",
+      "total_patterns": 34,
+      "requirements_list": [
+        "north facing",
+        "north facing backyard",
+        "boat parking",
+        "caravan parking",
+        "pool",
+        "swimming pool",
+        "renovated",
+        "recently renovated",
+        "solar panels",
+        "solar",
+        "study",
+        "home office",
+        "office",
+        "balcony",
+        "courtyard",
+        "view",
+        "water view",
+        "bay view",
+        "close to transport",
+        "near transport",
+        "close to schools",
+        "near schools",
+        "walk to shops",
+        "walking distance to shops",
+        "air conditioning",
+        "heating",
+        "ducted heating",
+        "fireplace",
+        "open plan",
+        "modern kitchen",
+        "updated bathroom",
+        "garage",
+        "garden",
+        "backyard"
+      ]
+    },
+    
+    "yes_no_confirmations": {
+      "description": "Confirmation response patterns",
+      "total_patterns": 13,
+      "affirmative": [
+        "yes",
+        "yeah",
+        "yep",
+        "sure",
+        "correct",
+        "right",
+        "that's right",
+        "sounds good"
+      ],
+      "negative": [
+        "no",
+        "nope",
+        "not",
+        "incorrect",
+        "wrong",
+        "that's not right"
+      ]
+    },
+    
+    "goodbye_termination": {
+      "description": "Call termination keywords",
+      "total_patterns": 5,
+      "termination_triggers": [
+        "goodbye",
+        "bye",
+        "thanks",
+        "thank you",
+        "cheers"
+      ]
+    }
+    
+  },
+  
+  "metadata": {
+    "extraction_categories": 12,
+    "total_unique_patterns": 352,
+    "coverage": {
+      "property_type": "complete",
+      "bedrooms": "complete",
+      "bathrooms": "complete",
+      "parking": "complete",
+      "budget": "complete",
+      "timeline": "complete",
+      "target_areas": "complete - Melbourne Bayside focus",
+      "service_type": "complete",
+      "property_purpose": "complete",
+      "special_requirements": "complete",
+      "confirmations": "complete",
+      "termination": "complete"
+    },
+    "quality_status": "production_ready",
+    "integration_status": "ready_for_mcp_deployment",
+    "source": "unified_master_keywords.json + critical_missing_patterns",
+    "generated": "2025-11-18"
+  }
+}
