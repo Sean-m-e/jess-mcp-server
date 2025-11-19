@@ -1,7 +1,7 @@
 {
   "version": "3.40",
   "section": "reactive_modules",
-  "source_file": "behavioral_protocols.json",
+  "source_file": "JESS_V3_40_PRODUCTION_READY.txt",
   "extraction_date": "2025-11-19",
   "modules_included": ["R1", "R2", "R3", "R4", "R5", "R6", "R8", "R9", "R10", "R15", "R18", "R24", "R26", "R27", "R29", "R30", "R31"],
   "line_count": 950,
@@ -898,4 +898,3 @@ END REACTIVE MODULES
     "marketing_value": "VR headset response, personality showcase, competitive intelligence protection"
   }
 }
-
